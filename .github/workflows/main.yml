@@ -21,6 +21,7 @@ jobs:
       shell: bash
       run: |
         cd AssignmentApp
+        dotnet restore
         dotnet build --configuration Release
         dotnet test
         dotnet publish -c Release -o out
@@ -28,5 +29,5 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: my-artifacts
+        name: dotnet-artifacts
         path: ${{ github.workspace }}/AssignmentApp/out
