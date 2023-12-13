@@ -1,0 +1,33 @@
+name: .NET Core Build and Publish
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  build:
+    runs-on: self-hosted
+ 
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+ 
+    - name: set-up through custom action
+      uses: paramwinwire/assignment-actions/.github/actions/build-project@main
+
+    - name: Build and Publish
+      shell: bash
+      run: |
+        cd AssignmentApp
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet test
+        dotnet publish -c Release -o out
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dotnet-artifacts
+        path: ${{ github.workspace }}/AssignmentApp/out
