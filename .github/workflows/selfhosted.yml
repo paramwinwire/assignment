@@ -20,7 +20,7 @@ jobs:
     - name: Build and Publish
       shell: bash
       run: |
-        cd AssignmentApp
+        cd D:\Githubtrainning\assignmnet\assignment\AssignmentApp
         dotnet restore
         dotnet build --configuration Release
         dotnet test
