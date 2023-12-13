@@ -1,0 +1,26 @@
+name: .NET Core Build and Test
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+ 
+    - name: set-up
+      uses: .paramwinwire/assignment-actions/actions/build-project@main
+
+    - name: Build and Publish
+      shell: bash
+      run: |
+        cd AssignmentApp
+        dotnet build --configuration Release
+        dotnet test
+        dotnet publish -c Release -o out
