@@ -1,0 +1,29 @@
+name: Create Issue
+
+on:
+  workflow_run:
+    workflows: ["main.yml"]
+    types:
+      - completed
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create Issue
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const username = context.payload.workflow_run.head_commit.author.username;
+          const issueTitle = `Issue triggered automatically by ${username}`;
+
+          const newIssue = await github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: issueTitle,
+            body: 'This issue was created automatically by a GitHub Actions workflow.'
+          });
+
+          console.log(`New issue created: ${newIssue.data.html_url}`);
