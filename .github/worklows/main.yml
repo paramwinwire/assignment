@@ -15,7 +15,7 @@ jobs:
 
  
     - name: set-up
-      uses: paramwinwire/assignment-actions/actions/build-project@main
+      uses: paramwinwire/assignment-actions/.github/actions/build-project@main
 
     - name: Build and Publish
       shell: bash
