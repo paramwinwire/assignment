@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create Issue
-        uses: octokit/request-action@v1
+        uses: octokit/request-action@main
         with:
           route: POST /repos/:owner/:repo/issues
           owner: ${{ github.repository_owner }}
