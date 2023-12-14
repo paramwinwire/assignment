@@ -19,11 +19,15 @@ jobs:
           const username = context.payload.workflow_run.head_commit.author.username;
           const issueTitle = `Issue triggered automatically by ${username}`;
 
-          const newIssue = await github.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: issueTitle,
-            body: 'This issue was created automatically by a GitHub Actions workflow.'
-          });
+          async function createNewIssue() {
+            const newIssue = await github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: 'This issue was created automatically by a GitHub Actions workflow.'
+            });
 
-          console.log(`New issue created: ${newIssue.data.html_url}`);
+            console.log(`New issue created: ${newIssue.data.html_url}`);
+          }
+
+          createNewIssue();
