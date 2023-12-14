@@ -2,7 +2,7 @@ name: Create Issue
 
 on:
   workflow_run:
-    workflows:  ["main.yml"]
+    workflows:  [".NET Core Build and Publish workflow"]
     types:
       - completed
 
