@@ -2,7 +2,7 @@ name: Create Issue
 
 on:
   workflow_run:
-    workflows:  [".NET Core Build and Publish"]
+    workflows: [".NET Core Build and Publish"]
     types:
       - completed
 
@@ -11,23 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Create Issue
-      uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const username = context.payload.workflow_run.head_commit.author.username;
-          const issueTitle = `Issue triggered automatically by ${username}`;
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-          async function createNewIssue() {
-            const newIssue = await github.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: issueTitle,
-              body: 'This issue was created automatically by a GitHub Actions workflow.'
-            });
-
-            console.log(`New issue created: ${newIssue.data.html_url}`);
-          }
-
-          createNewIssue();
+      - name: Create Issue
+        uses: octokit/request-action@v2
+        with:
+          route: POST /repos/:owner/:repo/issues
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+          title: "Issue triggered automatically by ${{ github.actor }}"
+          body: "This issue was created automatically by a GitHub Actions workflow."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
