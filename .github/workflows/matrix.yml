@@ -45,25 +45,25 @@ jobs:
           fi
         if: matrix.configuration == 'Release' && matrix.os == 'ubuntu-latest'
 
-      - name: Send Email on Successful Deploy
-        if: steps.deploy.outputs.deploy_success == 'true'
-        uses: cinotify/github-action@main
-        with:
-          to: 'rajanparamesh@gmail.com' #enter an email address to which the notification needs to be sent
-          subject: 'Deployment Successful'
-          body: |
-            Hey ${{github.actor}}! The deployment on ${{ matrix.os }} for configuration ${{ matrix.configuration }} and runtime ${{ matrix.runtime }} was successful.
-  
+    - name: Send Email on Successful Deploy
+      if: steps.deploy.outputs.deploy_success == 'true'
+      uses: cinotify/github-action@main
+      with:
+        to: 'rajanparamesh@gmail.com' #enter an email address to which the notification needs to be sent
+        subject: 'Deployment Successful'
+        body: |
+          Hey ${{github.actor}}! The deployment on ${{ matrix.os }} for configuration ${{ matrix.configuration }} and runtime ${{ matrix.runtime }} was successful.
+
   notify-slack:
     runs-on: ubuntu-latest
     needs: build
     if: always()
     steps:
       - name: Notify Slack
-        uses: rtCamp/action-slack-notify@v2
+        uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: 'Slack Notifier'
-          status: ${{ job.status }}
-          text: "The manual workflow completed with status: ${{ job.status }}"
+          slack-message: "GitHub build result : ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+          
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
