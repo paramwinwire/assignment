@@ -27,7 +27,8 @@ jobs:
 
       - name: Build Project
         run:  |
-              cd AssignmentApp 
+              cd AssignmentApp
+              ls -a 
               dotnet build -c ${{ matrix.config }}
               dotnet test
       - name: Deploy Release on Ubuntu
