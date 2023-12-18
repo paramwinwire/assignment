@@ -28,6 +28,7 @@ jobs:
       - name: Build Project
         run:  |
               cd AssignmentApp
+              pwd
               ls  
               dotnet build -c ${{ matrix.config }}
               dotnet test
