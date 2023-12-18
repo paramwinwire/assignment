@@ -40,6 +40,8 @@ jobs:
           if [ "${{ matrix.configuration }}" = "Release" ] && [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
             echo "Deploying on Ubuntu for Release configuration"
             echo "Deploying"
+            pwd
+            ls
             echo "::set-output name=deploy_success::true"
           else
             echo "Skipping deployment"
