@@ -42,6 +42,8 @@ jobs:
             echo "Deploying"
             pwd
             ls
+            mkdir deploy
+            cp -r /home/runner/work/assignment/assignment/AssignmentApp/dep  ./deploy
             echo "::set-output name=deploy_success::true"
           else
             echo "Skipping deployment"
