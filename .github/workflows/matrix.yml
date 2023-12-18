@@ -31,7 +31,7 @@ jobs:
               pwd
               ls  
               # dotnet build -c ${{ matrix.config }}
-              dotnet build --configuration ${{ matrix.configuration }} --runtime ${{ matrix.runtime }} --no-self-contained -o paramwinwire/assignment-actions/.github/actions/build-project
+              dotnet build --configuration ${{ matrix.configuration }}  -o ./dep
               ls
               dotnet test
       - name: Deploy
