@@ -1,0 +1,57 @@
+name: Matrix Build 
+
+on:
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: 'Trigger the workflow manually'
+        required: true
+        default: 'Start'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        config: [Development, Release]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1' # or the version you are using
+
+      - name: Build Project
+        run: dotnet build -c ${{ matrix.config }}
+
+      - name: Deploy Release on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
+        run: |
+          mkdir deploy
+          cp -r ./path/to/your/built/files/* ./deploy/
+
+      - name: Send Email on Successful Deployment
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
+        run: |
+          # Use your email sending script or tool here
+          echo "Subject: Assignment Workflow by ${{ github.actor }}" > email.txt
+          echo "Body: The deployment of the app was successful. It was triggered from the ${{ github.repository }} repository" >> email.txt
+          cat email.txt | mail -s "Assignment Workflow by ${{ github.actor }}" ${{ secrets.EMAIL_TO }}
+
+  notify-slack:
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    steps:
+      - name: Notify Slack
+        uses: rtCamp/action-slack-notify@v2
+        with:
+          channel-id: 'Slack Notifier'
+          status: ${{ job.status }}
+          text: "The manual workflow completed with status: ${{ job.status }}"
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
