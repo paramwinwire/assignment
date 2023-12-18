@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        config: [Development, Release]
+        configuration: [Development, Release]
 
     steps:
       - name: Checkout Repository
@@ -30,7 +30,9 @@ jobs:
               cd AssignmentApp
               pwd
               ls  
-              dotnet build -c ${{ matrix.config }}
+              # dotnet build -c ${{ matrix.config }}
+              dotnet build --configuration ${{ matrix.configuration }} --runtime ${{ matrix.runtime }} --no-self-contained -o paramwinwire/assignment-actions/.github/actions/build-project
+              ls
               dotnet test
       - name: Deploy
         id: deploy
