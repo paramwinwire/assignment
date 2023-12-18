@@ -26,8 +26,10 @@ jobs:
           dotnet-version: '3.1' # or the version you are using
 
       - name: Build Project
-        run: dotnet build -c ${{ matrix.config }}
-
+        run:  |
+              cd AssignmentApp 
+              dotnet build -c ${{ matrix.config }}
+              dotnet test
       - name: Deploy Release on Ubuntu
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
         run: |
