@@ -32,12 +32,18 @@ jobs:
               ls  
               dotnet build -c ${{ matrix.config }}
               dotnet test
-      - name: Deploy Release on Ubuntu
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
+      - name: Deploy
+        id: deploy
         run: |
-          cd AssignmentApp
-          mkdir deploy
-          cp -r /home/runner/work/assignment/assignment/AssignmentApp/* ./deploy/
+          if [ "${{ matrix.configuration }}" = "Release" ] && [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+            echo "Deploying on Ubuntu for Release configuration"
+            echo "Deploying"
+            echo "::set-output name=deploy_success::true"
+          else
+            echo "Skipping deployment"
+            echo "::set-output name=deploy_success::false"
+          fi
+        if: matrix.configuration == 'Release' && matrix.os == 'ubuntu-latest'
 
       - name: Send Email on Successful Deployment
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
