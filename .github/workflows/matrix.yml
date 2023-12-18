@@ -64,7 +64,7 @@ jobs:
       - name: Notify Slack
         uses: slackapi/slack-github-action@v1.24.0
         with:
-          channel-id: 'Slack Notifier'
+          channel-id: 'learn-github-actions'
           slack-message: "GitHub build result : ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
           
         env:
