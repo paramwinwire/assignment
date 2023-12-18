@@ -35,8 +35,9 @@ jobs:
       - name: Deploy Release on Ubuntu
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
         run: |
+          cd AssignmentApp
           mkdir deploy
-          cp -r ./path/to/your/built/files/* ./deploy/
+          cp -r /home/runner/work/assignment/assignment/AssignmentApp/* ./deploy/
 
       - name: Send Email on Successful Deployment
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.config == 'Release' }}
